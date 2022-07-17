@@ -10,6 +10,8 @@ import About from './pages/About';
 import NotFound from './pages/NotFound';
 import { ToastContainer } from 'react-toastify';
 import Header from './components/Header';
+import Auth from './pages/Auth';
+import "react-toastify/dist/ReactToastify.css";
 
 
 function App() {
@@ -19,13 +21,14 @@ function App() {
   return (
     <div className="App">
       <Header setActive={setActive} active={active} />
-      <ToastContainer />
+      <ToastContainer position='top-center' />
       <Routes>
         <Route path='/' element={<Home />} />
         <Route path='/detail/:id' element={<Details />} />
         <Route path='/create' element={<AddEditBlog />} />
         <Route path='/update/:id' element={<AddEditBlog />} />
         <Route path='/about' element={<About />} />
+        <Route path='/auth' element={<Auth setActive={setActive} />} />
         <Route path='*' element={<NotFound />} />
       </Routes>
     </div> 
