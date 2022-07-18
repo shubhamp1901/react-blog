@@ -1,8 +1,8 @@
-import {useState} from 'react'
+import {useEffect, useState} from 'react'
 import './App.css';
 import './style.scss';
 import './media-query.css';
-import {Routes, Route} from 'react-router-dom'
+import {Routes, Route, useNavigate} from 'react-router-dom'
 import Home from './pages/Home';
 import Details from './pages/Details';
 import AddEditBlog from './pages/AddEditBlog';
@@ -12,15 +12,38 @@ import { ToastContainer } from 'react-toastify';
 import Header from './components/Header';
 import Auth from './pages/Auth';
 import "react-toastify/dist/ReactToastify.css";
+import { auth } from './firebase';
+import { signOut } from 'firebase/auth';
 
 
 function App() {
 
   const [active, setActive] = useState('home')
+  const [user, setUser] = useState(null)
+
+  const navigate = useNavigate()
+
+  useEffect(() => {
+    auth.onAuthStateChanged((authUser) => {
+      if(authUser) {
+        setUser(authUser)
+      }else {
+        setUser(null)
+      }
+    })
+  }, [])
+  
+  const handleLogout = () => {
+    signOut(auth).then(() => {
+      setUser(null)
+      setActive('login')
+      navigate('/auth')
+    })
+  }
 
   return (
     <div className="App">
-      <Header setActive={setActive} active={active} />
+      <Header setActive={setActive} active={active} user={user} handleLogout={handleLogout} />
       <ToastContainer position='top-center' />
       <Routes>
         <Route path='/' element={<Home />} />
