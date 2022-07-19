@@ -4,6 +4,7 @@ import "@pathofdev/react-tag-input/build/index.css";
 import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
 import { db, storage } from "../firebase";
 import { addDoc, collection, serverTimestamp } from "firebase/firestore";
+import { useNavigate } from "react-router-dom";
 
 const initialState = {
   title: "",
@@ -28,6 +29,8 @@ const AddEditBlog = ({user}) => {
   const [progress, setProgress] = useState(null);
 
   const { title, tags, category, trending, description } = form;
+
+  const navigate = useNavigate()
 
   useEffect(() => {
     const uploadFile = () => {
@@ -96,6 +99,7 @@ const AddEditBlog = ({user}) => {
         console.log(err)   
       }
     }
+    navigate("/")
   }
 
   return (
