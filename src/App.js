@@ -49,7 +49,7 @@ function App() {
       />
       <ToastContainer position="top-center" />
       <Routes>
-        <Route path="/" element={<Home />} />
+        <Route path="/" element={<Home setActive={setActive} user={user} />} />
         <Route path="/detail/:id" element={<Details setActive={setActive} />} />
         <Route
           path="/create"
