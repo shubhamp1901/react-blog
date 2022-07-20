@@ -1,10 +1,10 @@
-import { collection, onSnapshot } from "firebase/firestore";
+import { collection, deleteDoc, doc, onSnapshot } from "firebase/firestore";
 import React, { useEffect, useState } from "react";
 import BlogSection from "../components/BlogSection";
 import Spinner from "../components/Spinner";
 import { db } from "../firebase";
 
-const Home = ({setActive, user}) => {
+const Home = ({ setActive, user }) => {
   const [loading, setLoading] = useState(true);
   const [blogs, setBlogs] = useState([]);
 
@@ -17,8 +17,8 @@ const Home = ({setActive, user}) => {
           list.push({ id: doc.id, ...doc.data() });
         });
         setBlogs(list);
-        setLoading(false)
-        setActive('home')
+        setLoading(false);
+        setActive("home");
       },
       (error) => {
         console.log(error);
@@ -26,13 +26,25 @@ const Home = ({setActive, user}) => {
     );
 
     return () => {
-      unsub()
-    }
+      unsub();
+    };
   }, []);
 
-  if(loading) {
-    return <Spinner />
+  if (loading) {
+    return <Spinner />;
   }
+
+  const handleDelete = async (id) => {
+    if (window.confirm("Are you sure you want to delete the blog?")) {
+      try {
+        setLoading(true);
+        await deleteDoc(doc(db, "blogs", id));
+        setLoading(false);
+      } catch (err) {
+        console.log(err);
+      }
+    }
+  };
 
   return (
     <div className="container-fluid pb-4 pt-4 padding">
@@ -40,7 +52,7 @@ const Home = ({setActive, user}) => {
         <div className="row mx-0">
           <h2>Trending</h2>
           <div className="col-md-8">
-            <BlogSection blogs={blogs} user={user} />
+            <BlogSection blogs={blogs} user={user} handleDelete={handleDelete} />
           </div>
           <div className="col-md-3">
             <h2>Tags</h2>
