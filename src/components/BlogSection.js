@@ -29,7 +29,9 @@ const BlogSection = ({ blogs, user }) => {
             <div className="short-description text-start">
                 {excerpt(item.description, 120)}
             </div>
-            <button className="btn btn-read">Read More</button>
+            <Link to={`/detail/${item.id}`}>
+              <button className="btn btn-read">Read More</button>
+            </Link>
             <div style={{float: 'right'}}>
               <FontAwesome name="trash" style={{margin: '15px', cursor: 'pointer'}} size='2x' />
               <FontAwesome name="edit" style={{cursor: 'pointer'}} size='2x' />
