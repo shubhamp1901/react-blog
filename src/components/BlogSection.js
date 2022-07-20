@@ -15,7 +15,7 @@ const BlogSection = ({ blogs, user, handleDelete }) => {
           <div className="col-md-5">
             <div className="hover-blogs-img">
               <div className="blogs-img">
-                <img src={item.imgUrl} alt={item.title} />
+                <img src={item.imgUrl} alt="https://cdn.pixabay.com/photo/2016/07/07/16/46/dice-1502706__340.jpg" />
                 <div></div>
               </div>
             </div>
