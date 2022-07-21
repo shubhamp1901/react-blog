@@ -3,8 +3,16 @@ import ReactTagInput from "@pathofdev/react-tag-input";
 import "@pathofdev/react-tag-input/build/index.css";
 import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
 import { db, storage } from "../firebase";
-import { addDoc, collection, serverTimestamp } from "firebase/firestore";
-import { useNavigate } from "react-router-dom";
+import {
+  addDoc,
+  collection,
+  doc,
+  getDoc,
+  serverTimestamp,
+  updateDoc,
+} from "firebase/firestore";
+import { useNavigate, useParams } from "react-router-dom";
+import { toast } from "react-toastify";
 
 const initialState = {
   title: "",
@@ -23,14 +31,16 @@ const categoryOption = [
   "Business",
 ];
 
-const AddEditBlog = ({user}) => {
+const AddEditBlog = ({ user, setActive }) => {
   const [form, setForm] = useState(initialState);
   const [file, setFile] = useState(null);
   const [progress, setProgress] = useState(null);
 
   const { title, tags, category, trending, description } = form;
 
-  const navigate = useNavigate()
+  const { id } = useParams();
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     const uploadFile = () => {
@@ -69,44 +79,75 @@ const AddEditBlog = ({user}) => {
     file && uploadFile();
   }, [file]);
 
+  useEffect(() => {
+    id && getBlogDetail();
+  }, [id]);
+
+  const getBlogDetail = async () => {
+    const docRef = doc(db, "blogs", id);
+    const snapshot = await getDoc(docRef);
+    if (snapshot.exists()) {
+      setForm({ ...snapshot.data() });
+    }
+    setActive(null);
+  };
+
   const handleChange = (e) => {
-    setForm({...form, [e.target.name]: e.target.value})
+    setForm({ ...form, [e.target.name]: e.target.value });
   };
 
   const handleTags = (tags) => {
-    setForm({...form, tags})
+    setForm({ ...form, tags });
   };
 
   const handleTrending = (e) => {
-    setForm({...form, trending: e.target.value})
+    setForm({ ...form, trending: e.target.value });
   };
 
   const onCategoryChange = (e) => {
-    setForm({...form, category: e.target.value})
+    setForm({ ...form, category: e.target.value });
   };
 
   const handleSubmit = async (e) => {
-    e.preventDefault()
-    if(category && title && tags && file && description && trending){
-      try{
-        await addDoc(collection(db, "blogs"), {
-          ...form,
-          timestamp: serverTimestamp(),
-          author: user.displayName,
-          userId: user.uid
-        })
-      }catch(err) {
-        console.log(err)   
+    e.preventDefault();
+    if (category && title && tags && file && description && trending) {
+      if (!id) {
+        try {
+          await addDoc(collection(db, "blogs"), {
+            ...form,
+            timestamp: serverTimestamp(),
+            author: user.displayName,
+            userId: user.uid,
+          });
+        } catch (err) {
+          console.log(err);
+        }
+      } else {
+        try {
+          // doc instead of collection because we are targeting specific doc
+          await updateDoc(doc(db, "blogs", id), {
+            ...form,
+            timestamp: serverTimestamp(),
+            author: user.displayName,
+            userId: user.uid,
+          });
+        } catch (err) {
+          console.log(err);
+        }
       }
+    }else {
+      return toast.error('All the field are mandatory to fill')
     }
-    navigate("/")
-  }
+    navigate("/");
+  };
 
   return (
     <div className="container-fluid mb-4">
       <div className="container">
         <div className="col-12">
-          <div className="text-center heading py-2">Create Blog</div>
+          <div className="text-center heading py-2">
+            {id ? "Update" : "Create"} Blog
+          </div>
         </div>
         <div className="row h-100 justify-content-center align-items-center">
           <div className="col-10 col-md-8 col-lg-6">
@@ -193,7 +234,7 @@ const AddEditBlog = ({user}) => {
                   type="submit"
                   disabled={progress !== null && progress < 100}
                 >
-                  Submit
+                  {id ? "Update" : "Submit"}
                 </button>
               </div>
             </form>
