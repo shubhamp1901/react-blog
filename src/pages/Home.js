@@ -1,5 +1,6 @@
 import { collection, deleteDoc, doc, onSnapshot } from "firebase/firestore";
 import React, { useEffect, useState } from "react";
+import { toast } from "react-toastify";
 import BlogSection from "../components/BlogSection";
 import Spinner from "../components/Spinner";
 import { db } from "../firebase";
@@ -39,6 +40,7 @@ const Home = ({ setActive, user }) => {
       try {
         setLoading(true);
         await deleteDoc(doc(db, "blogs", id));
+        toast.success("Blog has been deleted successfully")
         setLoading(false);
       } catch (err) {
         console.log(err);

@@ -71,6 +71,7 @@ const AddEditBlog = ({ user, setActive }) => {
         },
         () => {
           getDownloadURL(uploadTask.snapshot.ref).then((downloadUrl) => {
+            toast.info("Image has been uploaded to firebase successfully")
             setForm((prev) => ({ ...prev, imgUrl: downloadUrl }));
           });
         }
@@ -119,6 +120,7 @@ const AddEditBlog = ({ user, setActive }) => {
             author: user.displayName,
             userId: user.uid,
           });
+          toast.success("Blog has been create successfully")
         } catch (err) {
           console.log(err);
         }
@@ -131,6 +133,7 @@ const AddEditBlog = ({ user, setActive }) => {
             author: user.displayName,
             userId: user.uid,
           });
+          toast.success("Blog has been updated successfully")
         } catch (err) {
           console.log(err);
         }
