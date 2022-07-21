@@ -2,6 +2,7 @@ import { collection, deleteDoc, doc, onSnapshot } from "firebase/firestore";
 import React, { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import BlogSection from "../components/BlogSection";
+import MostPopular from "../components/MostPopular";
 import Spinner from "../components/Spinner";
 import Tags from "../components/Tags";
 import { db } from "../firebase";
@@ -64,7 +65,7 @@ const Home = ({ setActive, user }) => {
           </div>
           <div className="col-md-3">
             <Tags tags={tags} />
-            <h2>Most Popular</h2>
+            <MostPopular blogs={blogs} />
           </div>
         </div>
       </div>
