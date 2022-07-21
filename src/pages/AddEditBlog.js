@@ -111,7 +111,7 @@ const AddEditBlog = ({ user, setActive }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (category && title && tags && file && description && trending) {
+    if (category && title && tags && description && trending) {
       if (!id) {
         try {
           await addDoc(collection(db, "blogs"), {
