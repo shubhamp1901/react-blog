@@ -1,4 +1,8 @@
-import { createUserWithEmailAndPassword, signInWithEmailAndPassword, updateProfile } from "firebase/auth";
+import {
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+  updateProfile,
+} from "firebase/auth";
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
@@ -12,41 +16,50 @@ const initialState = {
   confirmPassword: "",
 };
 
-const Auth = ({setActive}) => {
+const Auth = ({ setActive, setUser }) => {
   const [state, setState] = useState(initialState);
   const [signUp, setSignUp] = useState(false);
 
   const { email, password, firstName, lastName, confirmPassword } = state;
 
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   const handleChange = (e) => {
     setState({ ...state, [e.target.name]: e.target.value });
   };
 
-  const handleAuth = async(e) => {
-    e.preventDefault()
-    if(!signUp) {
-      if(email && password) {
-        const {user} = await signInWithEmailAndPassword(auth, email, password)
-        setActive('home')
-      }else {
-        return toast.error('All fields are mandatory')
+  const handleAuth = async (e) => {
+    e.preventDefault();
+    if (!signUp) {
+      if (email && password) {
+        const { user } = await signInWithEmailAndPassword(
+          auth,
+          email,
+          password
+        );
+        setUser(user)
+        setActive("home");
+      } else {
+        return toast.error("All fields are mandatory");
       }
-    }else {
-      if(password !== confirmPassword) {
-        return toast.error('Password do not match')
+    } else {
+      if (password !== confirmPassword) {
+        return toast.error("Password do not match");
       }
-      if(firstName && lastName && email && password) {
-        const {user} = await createUserWithEmailAndPassword(auth, email, password)
-        await updateProfile(user, {displayName: `${firstName} ${lastName }`})
-        setActive("home")
-      }else {
-        return toast.error('All fields are mandatory')
+      if (firstName && lastName && email && password) {
+        const { user } = await createUserWithEmailAndPassword(
+          auth,
+          email,
+          password
+        );
+        await updateProfile(user, { displayName: `${firstName} ${lastName}` });
+        setActive("home");
+      } else {
+        return toast.error("All fields are mandatory");
       }
     }
-    navigate('/')
-  }
+    navigate("/");
+  };
 
   return (
     <div className="container-fluid mb-4">

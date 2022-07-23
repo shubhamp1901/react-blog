@@ -16,7 +16,8 @@ const BlogSection = ({ blogs, user, handleDelete }) => {
               <div className="blogs-img">
                 <img
                   src={item.imgUrl}
-                  alt="https://cdn.pixabay.com/photo/2016/07/07/16/46/dice-1502706__340.jpg"
+                  // alt="https://cdn.pixabay.com/photo/2016/07/07/16/46/dice-1502706__340.jpg"
+                  alt={item.title}
                 />
                 <div></div>
               </div>
@@ -37,7 +38,7 @@ const BlogSection = ({ blogs, user, handleDelete }) => {
             <Link to={`/detail/${item.id}`}>
               <button className="btn btn-read">Read More</button>
             </Link>
-            {user?.uid && item.userId === user.uid && (
+            {userId && item.userId === userId && (
               <div style={{ float: "right" }}>
                 <FontAwesome
                   name="trash"

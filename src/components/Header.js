@@ -1,6 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import transitions from "bootstrap"; 
+// import transitions from "bootstrap"; 
 
 const Header = ({ setActive, active, user, handleLogout }) => {
   const userId = user?.uid;
@@ -66,7 +66,7 @@ const Header = ({ setActive, active, user, handleLogout }) => {
                   {userId ? (
                     <>
                       <div className="profile-logo">
-                        <img src="https://cdn-icons-png.flaticon.com/512/149/149071.png" alt="photo" style={{width: '30px', height: '30px', borderRadius: '50%', marginTop: '12px'}} />
+                        <img src="https://cdn-icons-png.flaticon.com/512/149/149071.png" alt="" style={{width: '30px', height: '30px', borderRadius: '50%', marginTop: '12px'}} />
                       </div>
                       <p style={{marginTop: '12px', marginLeft: '5px', }}>{user?.displayName}</p>
                       <li className="nav-item nav-link" onClick={handleLogout}>

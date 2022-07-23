@@ -37,7 +37,8 @@ const Trending = ({ blogs }) => {
                 <div className="trending-img-size">
                   <img
                     src={item.imgUrl}
-                    alt="https://cdn.pixabay.com/photo/2016/07/07/16/46/dice-1502706__340.jpg"
+                    // alt="https://cdn.pixabay.com/photo/2016/07/07/16/46/dice-1502706__340.jpg"
+                    alt={item.title}
                     className="trending-img-relative"
                   />
                 </div>

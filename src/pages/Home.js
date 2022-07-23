@@ -2,7 +2,6 @@ import {
   collection,
   deleteDoc,
   doc,
-  getDoc,
   getDocs,
   onSnapshot,
   query,
@@ -60,7 +59,7 @@ const Home = ({ setActive, user }) => {
       unsub();
       getTrendingBlogs();
     };
-  }, []);
+  }, [setActive]);
 
   if (loading) {
     return <Spinner />;
